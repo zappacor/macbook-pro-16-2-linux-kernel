@@ -1,0 +1,4 @@
+# don't sync the kernel tar files, too big and worthless:
+zappacor-downloads/linux-*.tar.xz 
+# don't sync the working dir stuff either:
+zappacor-work-dir/*
