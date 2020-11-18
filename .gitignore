@@ -1,4 +1,15 @@
-# don't sync the kernel tar files, too big and worthless:
-zappacor-downloads/linux-*.tar.xz 
-# don't sync the working dir stuff either:
+# don't sync the working dir stuff:
 zappacor-work-dir/*
+#
+# just sync the *.zip files, the rest are irrelevant or too big:
+#  zappacor-downloads/apple-bce.zip
+#  zappacor-downloads/apple-ibridge.zip
+#  zappacor-downloads/mbp-ubuntu-kernel-master.zip
+zappacor-downloads/*
+!zappacor-downloads/*.zip
+
+
+
+
+
+
