@@ -168,6 +168,7 @@ make INSTALL_MOD_STRIP=1 modules_install
 make INSTALL_MOD_STRIP=1 install
 cd -
 # Need this for the Broadcom WiFi on my *HP laptop* to work (these following steps are *not* related to any Mac at all)
+# NOTE: works for 5.8.18, not for 5.9.8 (have to dig into it)
 wget -c -P $ZAPPACOR_DOWNLOADS https://launchpad.net/ubuntu/+source/bcmwl/6.30.223.271+bdcom-0ubuntu7/+build/20102161/+files/bcmwl-kernel-source_6.30.223.271+bdcom-0ubuntu7_amd64.deb
 apt install $ZAPPACOR_DOWNLOADS/bcmwl-kernel-source_6.30.223.271+bdcom-0ubuntu7_amd64.deb 
 
