@@ -1,0 +1,22 @@
+--- a/drivers/macintosh/apple-ibridge/apple-ib-als.c	2020-11-17 10:28:57.421385900 -0600
++++ b/drivers/macintosh/apple-ibridge/apple-ib-als.c	2020-11-17 10:28:44.246202500 -0600
+@@ -463,9 +463,9 @@ static void appleals_config_sensor(struct appleals_device *als_dev,
+ 		hid_hw_power(als_dev->hid_dev, PM_HINT_NORMAL);
+ }
+ 
+-static int appleals_config_iio(struct appleals_device *als_dev)
++static int appleals_config_iio(struct iio_dev *iio_dev)
+ {
+-	struct iio_dev *iio_dev = iio_priv_to_dev(als_dev);
++    struct appleals_device *als_dev = iio_priv(iio_dev);
+ 	struct iio_trigger *iio_trig;
+ 	struct device *parent = &als_dev->hid_dev->dev;
+ 	int rc;
+@@ -566,7 +566,7 @@ static int appleals_probe(struct hid_device *hdev,
+ 	appleals_config_sensor(als_dev, false, als_dev->cur_sensitivity);
+ 	hid_device_io_stop(hdev);
+ 
+-	rc = appleals_config_iio(als_dev);
++	rc = appleals_config_iio(iio_dev);
+ 	if (rc)
+ 		return rc;

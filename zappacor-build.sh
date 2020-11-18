@@ -11,7 +11,8 @@ DRIVER_IBRIDGE_URL=https://github.com/roadrunner2/macbook12-spi-driver/archive/m
 #
 ZAPPACOR_PATCHES_KERNEL=./zappacor-patches-kernel-$KERNEL_VERSION
 ZAPPACOR_PATCHES_BCE=./zappacor-patches-apple_bce-0.1.patch
-ZAPPACOR_DEFCONF=./zappacor-config-$KERNEL_VERSION
+# Had to add this for kernel v5.9 to build
+ZAPPACOR_PATCHES_IBRIDGE=./zappacor-patches-apple_ib_als-01.patch
 ZAPPACOR_DOWNLOADS=./zappacor-downloads
 ZAPPACOR_WORKDIR=./zappacor-work-dir
 
@@ -63,7 +64,7 @@ tar xf $ZAPPACOR_DOWNLOADS/linux-$KERNEL_VERSION.tar.xz -C $ZAPPACOR_WORKDIR
 ####################################################
 #   From: https://github.com/aunali1/mbp2018-bridge-drv.git (redirects to https://github.com/t2linux/apple-bce-drv)
 #   Will show up as:
-#   -> Device Drivers                                                                                                                                                                                 │  
+#   -> Device Drivers
 #     -> Macintosh device drivers
 #       -> Apple BCE driver (VHCI and Audio support)
 # Download and decompress it
@@ -73,7 +74,7 @@ mv $ZAPPACOR_WORKDIR/linux-$KERNEL_VERSION/drivers/macintosh/apple-bce-drv-aur $
 # Apply this patch to add a modalias to the driver so it can get automatically loaded on boot on a Mac with the T2 chip
 (ZAPPACOR_PATCHES_BCE=`readlink -f $ZAPPACOR_PATCHES_BCE`
  cd $ZAPPACOR_WORKDIR/linux-$KERNEL_VERSION
-  patch -p1 <$ZAPPACOR_PATCHES_BCE
+ patch -p1 <$ZAPPACOR_PATCHES_BCE
 )
 # Create its Kconfig
 printf 'config APPLE_BCE
@@ -110,13 +111,18 @@ echo 'obj-$(CONFIG_APPLE_BCE)         += apple-bce/' >>$ZAPPACOR_WORKDIR/linux-$
 #########################################################
 #   From: https://github.com/roadrunner2/macbook12-spi-driver
 #   Will show up as:
-#   -> Device Drivers                                                                                                                                                                                 │  
+#   -> Device Drivers
 #     -> Macintosh device drivers
 #       -> Apple iBridge driver (Touchbar and ALS support)
 # Download and decompress it
 wget -c -O $ZAPPACOR_DOWNLOADS/apple-ibridge.zip $DRIVER_IBRIDGE_URL
 unzip -d $ZAPPACOR_WORKDIR/linux-$KERNEL_VERSION/drivers/macintosh/ $ZAPPACOR_DOWNLOADS/apple-ibridge.zip -x '*/.gitignore'
 mv $ZAPPACOR_WORKDIR/linux-$KERNEL_VERSION/drivers/macintosh/macbook12-spi-driver-mbp15 $ZAPPACOR_WORKDIR/linux-$KERNEL_VERSION/drivers/macintosh/apple-ibridge
+# Had to add this for kernel v5.9 to build
+(ZAPPACOR_PATCHES_IBRIDGE=`readlink -f $ZAPPACOR_PATCHES_IBRIDGE`
+ cd $ZAPPACOR_WORKDIR/linux-$KERNEL_VERSION
+ patch -p1 <$ZAPPACOR_PATCHES_IBRIDGE
+)
 # Create its Kconfig
 printf 'config APPLE_IBRIDGE
 \ttristate "Apple iBridge driver (Touchbar and ALS support)"
@@ -143,15 +149,13 @@ echo 'obj-$(CONFIG_APPLE_IBRIDGE)     += apple-ibridge/' >>$ZAPPACOR_WORKDIR/lin
 #################################################################
 ################## CONFIG AND BUILD THE KERNEL ##################
 #################################################################
-ZAPPACOR_DEFCONF=`readlink -f $ZAPPACOR_DEFCONF`
 cd $ZAPPACOR_WORKDIR/linux-$KERNEL_VERSION
 make clean
 # Create a default kernel config 
-# cp $ZAPPACOR_DEFCONF .config
 sed 's/CONFIG_LOCALVERSION=.*/CONFIG_LOCALVERSION="-zappacor"/' /boot/config-`uname -r` >.config
 make olddefconfig
 # Build it
-time make -j$((`grep -c ^processor /proc/cpuinfo`*2)) all
+make -j$((`grep -c ^processor /proc/cpuinfo`*2)) all
 cd -
 
 ######################################################################
