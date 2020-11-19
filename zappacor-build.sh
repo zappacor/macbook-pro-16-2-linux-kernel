@@ -34,35 +34,6 @@ tar xf $ZAPPACOR_DOWNLOADS/linux-$KERNEL_VERSION.tar.xz -C $ZAPPACOR_WORKDIR
 wget -c -O $ZAPPACOR_DOWNLOADS/apple-bce.zip $DRIVER_BCE_URL
 unzip -d $ZAPPACOR_WORKDIR/linux-$KERNEL_VERSION/drivers/macintosh/ $ZAPPACOR_DOWNLOADS/apple-bce.zip -x '*/.gitignore'
 mv $ZAPPACOR_WORKDIR/linux-$KERNEL_VERSION/drivers/macintosh/apple-bce-drv-aur $ZAPPACOR_WORKDIR/linux-$KERNEL_VERSION/drivers/macintosh/apple-bce
-# Create its Kconfig (ToDo: implement it as part of a patch)
-printf 'config APPLE_BCE
-\ttristate "Apple BCE driver (VHCI and Audio support)"
-\tdefault m
-\tdepends on X86
-\tselect SOUND
-\tselect SND
-\tselect SND_PCM
-\tselect SND_JACK
-\thelp
-\t  VHCI and audio support on Apple MacBook models 2018 and later.
-
-\t  The project that implements this driver is divided in three components:
-\t    - BCE (Buffer Copy Engine): which establishes a basic communication
-\t      channel with the T2 chip. This component is required by the other two:
-\t      - VHCI (Virtual Host Controller Interface): Access to keyboard, mouse
-\t        and other system devices depend on this virtual USB host controller
-\t      - Audio: a driver for the T2 audio interface (currently only audio
-\t        output is supported).
-\t 
-\t  Please note that system suspend and resume are currently *not* supported.
-\t  
-\t  If "M" is selected, the module will be called apple-bce.' >$ZAPPACOR_WORKDIR/linux-$KERNEL_VERSION/drivers/macintosh/apple-bce/Kconfig
-# Edit its Makefile (ToDo: implement it as part of a patch)
-sed -i 's/obj-m/obj-$(CONFIG_APPLE_BCE)/g' $ZAPPACOR_WORKDIR/linux-$KERNEL_VERSION/drivers/macintosh/apple-bce/Makefile
-# Edit the kernel drivers Kconfig (ToDo: implement it as part of a patch)
-sed -i "\$i source \"drivers/macintosh/apple-bce/Kconfig\"\n" $ZAPPACOR_WORKDIR/linux-$KERNEL_VERSION/drivers/macintosh/Kconfig
-# Edit the kernel drivers Makefile (ToDo: implement it as part of a patch)
-echo 'obj-$(CONFIG_APPLE_BCE)         += apple-bce/' >>$ZAPPACOR_WORKDIR/linux-$KERNEL_VERSION/drivers/macintosh/Makefile
 
 #########################################################
 ################## ADD IBRIDGE DRIVERS ##################
@@ -76,28 +47,6 @@ echo 'obj-$(CONFIG_APPLE_BCE)         += apple-bce/' >>$ZAPPACOR_WORKDIR/linux-$
 wget -c -O $ZAPPACOR_DOWNLOADS/apple-ibridge.zip $DRIVER_IBRIDGE_URL
 unzip -d $ZAPPACOR_WORKDIR/linux-$KERNEL_VERSION/drivers/macintosh/ $ZAPPACOR_DOWNLOADS/apple-ibridge.zip -x '*/.gitignore'
 mv $ZAPPACOR_WORKDIR/linux-$KERNEL_VERSION/drivers/macintosh/macbook12-spi-driver-mbp15 $ZAPPACOR_WORKDIR/linux-$KERNEL_VERSION/drivers/macintosh/apple-ibridge
-# Create its Kconfig (ToDo: implement it as part of a patch)
-printf 'config APPLE_IBRIDGE
-\ttristate "Apple iBridge driver (Touchbar and ALS support)"
-\tdefault m
-\tdepends on X86
-\tselect HID
-\tselect IIO
-\tselect IIO_TRIGGERED_BUFFER
-\tselect IIO_BUFFER
-\tselect ACPI_ALS
-\thelp
-\t  Work in progress driver for the Touchbar and ALS (Ambient
-\t  Light Sensor) on 2019 and later Apple MacBook Pro computers.
-\t  
-\t  If "M" is selected, the modules will be called apple-ibridge,
-\t  apple-ib-tb and apple-ib-als.' >$ZAPPACOR_WORKDIR/linux-$KERNEL_VERSION/drivers/macintosh/apple-ibridge/Kconfig
-# Edit its Makefile file (ToDo: implement it as part of a patch)
-sed -i 's/obj-m/obj-$(CONFIG_APPLE_IBRIDGE)/g' $ZAPPACOR_WORKDIR/linux-$KERNEL_VERSION/drivers/macintosh/apple-ibridge/Makefile
-# Edit the kernel drivers Kconfig file (ToDo: implement it as part of a patch)
-sed -i "\$i source \"drivers/macintosh/apple-ibridge/Kconfig\"\n" $ZAPPACOR_WORKDIR/linux-$KERNEL_VERSION/drivers/macintosh/Kconfig
-# Edit the kernel drivers Makefile file (ToDo: implement it as part of a patch)
-echo 'obj-$(CONFIG_APPLE_IBRIDGE)     += apple-ibridge/' >>$ZAPPACOR_WORKDIR/linux-$KERNEL_VERSION/drivers/macintosh/Makefile
 
 ###################################################
 ################## APPLY PATCHES ##################

@@ -1,0 +1,33 @@
+diff -ruN a/drivers/macintosh/apple-ibridge/Kconfig b/drivers/macintosh/apple-ibridge/Kconfig
+--- a/drivers/macintosh/apple-ibridge/Kconfig	1969-12-31 18:00:00.000000000 -0600
++++ b/drivers/macintosh/apple-ibridge/Kconfig	2020-11-19 08:18:37.322434500 -0600
+@@ -0,0 +1,15 @@
++config APPLE_IBRIDGE
++	tristate "Apple iBridge driver (Touchbar and ALS support)"
++	default m
++	depends on X86
++	select HID
++	select IIO
++	select IIO_TRIGGERED_BUFFER
++	select IIO_BUFFER
++	select ACPI_ALS
++	help
++	  Work in progress driver for the Touchbar and ALS (Ambient
++	  Light Sensor) on 2019 and later Apple MacBook Pro computers.
++	  
++	  If "M" is selected, the modules will be called apple-ibridge,
++	  apple-ib-tb and apple-ib-als.
+\ No newline at end of file
+diff -ruN a/drivers/macintosh/apple-ibridge/Makefile b/drivers/macintosh/apple-ibridge/Makefile
+--- a/drivers/macintosh/apple-ibridge/Makefile	2019-08-31 16:11:24.000000000 -0500
++++ b/drivers/macintosh/apple-ibridge/Makefile	2020-11-19 08:19:25.647961200 -0600
+@@ -1,6 +1,6 @@
+-obj-m += apple-ibridge.o
+-obj-m += apple-ib-tb.o
+-obj-m += apple-ib-als.o
++obj-$(CONFIG_APPLE_IBRIDGE) += apple-ibridge.o
++obj-$(CONFIG_APPLE_IBRIDGE) += apple-ib-tb.o
++obj-$(CONFIG_APPLE_IBRIDGE) += apple-ib-als.o
+ 
+ KVERSION := $(KERNELRELEASE)
+ ifeq ($(origin KERNELRELEASE), undefined)

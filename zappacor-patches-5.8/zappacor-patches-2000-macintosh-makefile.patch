@@ -1,0 +1,9 @@
+--- a/drivers/macintosh/Makefile	2020-11-10 14:16:17.000000000 -0600
++++ b/drivers/macintosh/Makefile	2020-11-19 07:10:24.166898300 -0600
+@@ -63,3 +63,6 @@
+ obj-$(CONFIG_PMAC_RACKMETER)	+= rack-meter.o
+ 
+ obj-$(CONFIG_SENSORS_AMS)	+= ams/
++
++obj-$(CONFIG_APPLE_BCE)         += apple-bce/
++obj-$(CONFIG_APPLE_IBRIDGE)     += apple-ibridge/

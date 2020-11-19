@@ -1,11 +1,10 @@
 # macbook-pro-16_2-linux-kernel:
 
-- Linux kernel 5.8+ with Apple T2 patches built-in
--- will try to keep up to newer kernel releases.
-- This project is closely inspired by marcosfad/mbp-ubuntu-kernel.
+- Linux kernel 5.8+ with Apple T2 patches built-in, will try to keep up to newer kernel releases.
+- This project is inspired on marcosfad/mbp-ubuntu-kernel.
 
 ## Drivers included:
-See ```zappacor-patches-*``` files and folders.
+See ```zappacor-patches-*``` folders.
 
 ## Installation:
 Follow the steps on ```zappacor-build.sh```
@@ -14,7 +13,7 @@ Follow the steps on ```zappacor-build.sh```
 - WiFi is still not working on the MacBooks 16,2.
 
 ## If this repo helped you in any way:
-- Add a star  to this repo.
+- Add a star  to this repo ;-)
 - Invite a coffee to those on the credits list.
 
 ## Credits:

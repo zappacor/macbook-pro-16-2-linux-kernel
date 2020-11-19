@@ -1,0 +1,39 @@
+drivers/macintosh/apple-bce# cp Makefile Makefile
+
+diff -ruN a/drivers/macintosh/apple-bce/Kconfigb/drivers/macintosh/apple-bce/Kconfig
+--- a/drivers/macintosh/apple-bce/Kconfig	1969-12-31 18:00:00.000000000 -0600
++++b/drivers/macintosh/apple-bce/Kconfig	2020-11-19 07:34:30.482518400 -0600
+@@ -0,0 +1,22 @@
++config APPLE_BCE
++	tristate "Apple BCE driver (VHCI and Audio support)"
++	default m
++	depends on X86
++	select SOUND
++	select SND
++	select SND_PCM
++	select SND_JACK
++	help
++	  VHCI and audio support on Apple MacBook models 2018 and later.
++
++	  The project that implements this driver is divided in three components:
++	    - BCE (Buffer Copy Engine): which establishes a basic communication
++	      channel with the T2 chip. This component is required by the other two:
++	      - VHCI (Virtual Host Controller Interface): Access to keyboard, mouse
++	        and other system devices depend on this virtual USB host controller
++	      - Audio: a driver for the T2 audio interface (currently only audio
++	        output is supported).
++	 
++	  Please note that system suspend and resume are currently *not* supported.
++	  
++	  If "M" is selected, the module will be called apple-bce.
+\ No newline at end of file
+diff -ruN a/drivers/macintosh/apple-bce/Makefileb/drivers/macintosh/apple-bce/Makefile
+--- a/drivers/macintosh/apple-bce/Makefile	2020-01-31 16:28:35.000000000 -0600
++++b/drivers/macintosh/apple-bce/Makefile	2020-11-19 07:35:14.810815200 -0600
+@@ -1,5 +1,5 @@
+ modname := apple-bce
+-obj-m += $(modname).o
++obj-$(CONFIG_APPLE_BCE) += $(modname).o
+ 
+ apple-bce-objs := apple_bce.o mailbox.o queue.o queue_dma.o vhci/vhci.o vhci/queue.o vhci/transfer.o audio/audio.o audio/protocol.o audio/protocol_bce.o audio/pcm.o
+ 

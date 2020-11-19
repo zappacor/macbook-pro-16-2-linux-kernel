@@ -1,0 +1,11 @@
+--- a/drivers/macintosh/Kconfig	2020-11-10 14:16:17.000000000 -0600
++++ b/drivers/macintosh/Kconfig	2020-11-18 17:14:52.028614800 -0600
+@@ -269,4 +269,8 @@
+ 	  I2C variant of motion sensor, found in early 2005 PowerBooks and
+ 	  iBooks.
+ 
++source "drivers/macintosh/apple-bce/Kconfig"
++
++source "drivers/macintosh/apple-ibridge/Kconfig"
++
+ endif # MACINTOSH_DRIVERS
