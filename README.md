@@ -1,7 +1,8 @@
 # macbook-pro-16_2-linux-kernel:
 
-- Linux kernel 5.8+ with Apple T2 patches built-in, will try to keep up to newer kernel releases.
-- This project is inspired on marcosfad/mbp-ubuntu-kernel.
+- Build Linux kernels 5.8 or 5.9 with support for the 2018 and later Apple T2 hardware.
+- Will try to keep up to newer kernel releases.
+- This project is derived from marcosfad/mbp-ubuntu-kernel.
 
 ## Drivers included:
 See ```zappacor-patches-*``` folders.
