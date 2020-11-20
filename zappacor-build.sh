@@ -9,7 +9,7 @@ KERNEL_URL=https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-$KERNEL_VERSION.ta
 DRIVER_BCE_URL=https://github.com/t2linux/apple-bce-drv/archive/aur.zip
 DRIVER_IBRIDGE_URL=https://github.com/roadrunner2/macbook12-spi-driver/archive/mbp15.zip
 #
-ZAPPACOR_PATCHES=./zappacor-patches-${KERNEL_VERSION%.*}
+ZAPPACOR_PATCHES=./zappacor-patches-$KERNEL_VERSION
 ZAPPACOR_DOWNLOADS=./zappacor-downloads
 ZAPPACOR_WORKDIR=./zappacor-work-dir
 
@@ -31,7 +31,7 @@ tar xf $ZAPPACOR_DOWNLOADS/linux-$KERNEL_VERSION.tar.xz -C $ZAPPACOR_WORKDIR
 #     -> Macintosh device drivers
 #       -> Apple BCE driver (VHCI and Audio support)
 # Download and decompress it
-wget -c -O $ZAPPACOR_DOWNLOADS/apple-bce.zip $DRIVER_BCE_URL
+# wget -c -O $ZAPPACOR_DOWNLOADS/apple-bce.zip $DRIVER_BCE_URL
 unzip -d $ZAPPACOR_WORKDIR/linux-$KERNEL_VERSION/drivers/macintosh/ $ZAPPACOR_DOWNLOADS/apple-bce.zip -x '*/.gitignore'
 mv $ZAPPACOR_WORKDIR/linux-$KERNEL_VERSION/drivers/macintosh/apple-bce-drv-aur $ZAPPACOR_WORKDIR/linux-$KERNEL_VERSION/drivers/macintosh/apple-bce
 
@@ -44,7 +44,7 @@ mv $ZAPPACOR_WORKDIR/linux-$KERNEL_VERSION/drivers/macintosh/apple-bce-drv-aur $
 #     -> Macintosh device drivers
 #       -> Apple iBridge driver (Touchbar and ALS support)
 # Download and decompress it
-wget -c -O $ZAPPACOR_DOWNLOADS/apple-ibridge.zip $DRIVER_IBRIDGE_URL
+# wget -c -O $ZAPPACOR_DOWNLOADS/apple-ibridge.zip $DRIVER_IBRIDGE_URL
 unzip -d $ZAPPACOR_WORKDIR/linux-$KERNEL_VERSION/drivers/macintosh/ $ZAPPACOR_DOWNLOADS/apple-ibridge.zip -x '*/.gitignore'
 mv $ZAPPACOR_WORKDIR/linux-$KERNEL_VERSION/drivers/macintosh/macbook12-spi-driver-mbp15 $ZAPPACOR_WORKDIR/linux-$KERNEL_VERSION/drivers/macintosh/apple-ibridge
 
@@ -107,8 +107,9 @@ cd -
 cd $ZAPPACOR_WORKDIR/linux-$KERNEL_VERSION
 # Should check if the headers are still needed or not (guess not since DKMS is not)
 #   make headers ; make headers_install
-make INSTALL_MOD_STRIP=1 modules_install
-make INSTALL_MOD_STRIP=1 install
+# Install modules and kernel stripping them:
+make INSTALL_MOD_STRIP=1 -j$((`grep -c ^processor /proc/cpuinfo`*2)) modules_install
+make INSTALL_MOD_STRIP=1 -j$((`grep -c ^processor /proc/cpuinfo`*2)) install
 cd -
 # Need this for the Broadcom WiFi on my *HP laptop* to work (these following steps are *not* related to any Mac at all)
 # NOTE: works for 5.8.18, not for 5.9.8 (so using broadcom-sta instead of bcmwl-kernel-source until there is an updated version of the later)

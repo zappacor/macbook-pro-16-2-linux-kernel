@@ -1,11 +1,11 @@
 # macbook-pro-16_2-linux-kernel:
 
-- Build Linux kernels 5.8 or 5.9 with support for the 2018 and later Apple T2 hardware.
-- Will try to keep up to newer kernel releases.
+- Builds a Linux kernel 5.8 or 5.9 that supports the Apple MacBook Pro's T2 and Touchbar.
+- Will try to update to newer kernel releases.
 - This project is derived from marcosfad/mbp-ubuntu-kernel.
 
 ## Drivers included:
-See ```zappacor-patches-*``` folders.
+See ```zappacor-patches-<kernel_version>``` folders.
 
 ## Installation:
 Follow the steps on ```zappacor-build.sh```
